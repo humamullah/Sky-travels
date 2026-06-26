@@ -42,11 +42,11 @@ export default function HeroSection() {
   };
 
   return (
-    <section className="relative h-[70vh] md:h-[80vh] flex items-end pb-20 md:pb-24 overflow-hidden">
+    <section className="relative h-[100vh] flex items-end overflow-hidden pb-4 md:pb-12">
       {/* Background Image */}
       <div className="absolute inset-0">
         <img
-          src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920&q=80"
+          src="horse-in-meadow.png"
           alt="KPK Mountain Landscape"
           className="w-full h-full object-cover"
           loading="eager"
@@ -58,11 +58,11 @@ export default function HeroSection() {
 
       {/* Content */}
       <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 md:pt-24 flex flex-col items-center text-center">
-        <div className="max-w-2xl mb-8">
+        <div className="max-w-3xl mb-8">
           <p className="text-white/60 text-xs font-semibold tracking-[0.2em] uppercase mb-2">
             Explore Pakistan
           </p>
-          <h1 className="font-heading text-[2.5rem] sm:text-6xl md:text-7xl lg:text-8xl font-extrabold text-white leading-[1.05] tracking-tight mb-3 whitespace-nowrap">
+          <h1 className="font-heading text-[2rem] sm:text-4xl md:text-7xl lg:text-7xl font-extrabold text-white leading-[1.05] tracking-tight mb-3">
             EXPLORE<br />BEAUTIFUL PAKISTAN!
           </h1>
           <h2 className="font-heading text-lg sm:text-xl md:text-2xl font-extrabold text-primary-400 mb-2">
