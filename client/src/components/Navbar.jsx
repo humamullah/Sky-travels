@@ -1,118 +1,139 @@
-import { useState } from 'react';
-import { Link, NavLink } from 'react-router-dom';
-import { useTheme } from '../context/ThemeContext';
+import { useState, useEffect } from 'react';
+import { Link, NavLink, useLocation } from 'react-router-dom';
+import { Menu, X, Plane, MessageCircle } from 'lucide-react';
 
 const navLinks = [
   { path: '/', label: 'Home' },
-  { path: '/about', label: 'About' },
-  { path: '/services', label: 'Services' },
   { path: '/destinations', label: 'Destinations' },
+  { path: '/tours', label: 'Packages' },
+  { path: '/about', label: 'About' },
   { path: '/contact', label: 'Contact' },
 ];
 
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
-  const { darkMode, toggleTheme } = useTheme();
+  const [scrolled, setScrolled] = useState(false);
+  const location = useLocation();
+
+  useEffect(() => {
+    setMobileOpen(false);
+  }, [location.pathname]);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 40);
+    window.addEventListener('scroll', onScroll);
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
 
   return (
-    <nav className="sticky top-0 z-50 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-700">
+    <nav
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        scrolled
+          ? 'bg-primary-600 shadow-xl shadow-primary-600/20'
+          : 'bg-primary-600/95 backdrop-blur-md'
+      }`}
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
-          <Link to="/" className="flex items-center gap-2">
-            <span className="text-2xl">✈️</span>
-            <span className="text-xl font-bold text-primary-600 dark:text-primary-400">
-              Atiq Travel
-            </span>
+        <div className="flex items-center justify-between h-16 md:h-20">
+
+          {/* Brand */}
+          <Link to="/" className="flex items-center gap-3 group shrink-0">
+            <div className="w-10 h-10 md:w-11 md:h-11 rounded-xl bg-white/15 flex items-center justify-center transition-transform duration-300 group-hover:scale-105">
+              <Plane className="w-5 h-5 md:w-6 md:h-6 text-white -rotate-45" />
+            </div>
+            <div className="flex flex-col">
+              <span className="font-heading text-lg md:text-xl font-extrabold text-white leading-none tracking-tight">
+                Star Walkers
+              </span>
+              <span className="text-[9px] md:text-[10px] font-medium text-white/70 tracking-[0.12em] uppercase leading-none mt-0.5">
+                Tours & Travel
+              </span>
+            </div>
           </Link>
 
-          <div className="hidden md:flex items-center gap-8">
-            {navLinks.map((link) => (
-              <NavLink
-                key={link.path}
-                to={link.path}
-                className={({ isActive }) =>
-                  `text-sm font-medium transition-colors duration-200 ${
-                    isActive
-                      ? 'text-primary-600 dark:text-primary-400'
-                      : 'text-slate-600 hover:text-primary-600 dark:text-slate-400 dark:hover:text-primary-400'
-                  }`
-                }
-              >
-                {link.label}
-              </NavLink>
-            ))}
-            <button
-              onClick={toggleTheme}
-              className="p-2 rounded-lg text-slate-600 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-800 transition-colors"
-              aria-label="Toggle theme"
-            >
-              {darkMode ? (
-                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
-                </svg>
-              ) : (
-                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
-                </svg>
-              )}
-            </button>
+          {/* Center Navigation */}
+          <div className="hidden lg:flex items-center">
+            <div className="flex items-center gap-1 bg-white/10 rounded-full px-2 py-1.5">
+              {navLinks.map((link) => (
+                <NavLink
+                  key={link.path}
+                  to={link.path}
+                  className={({ isActive }) =>
+                    `px-5 py-2 rounded-full text-sm font-semibold transition-all duration-200 ${
+                      isActive
+                        ? 'bg-white text-primary-600 shadow-lg'
+                        : 'text-white/80 hover:text-white hover:bg-white/10'
+                    }`
+                  }
+                >
+                  {link.label}
+                </NavLink>
+              ))}
+            </div>
           </div>
 
-          <div className="md:hidden flex items-center gap-2">
-            <button
-              onClick={toggleTheme}
-              className="p-2 rounded-lg text-slate-600 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-800 transition-colors"
-              aria-label="Toggle theme"
+          {/* Right CTA */}
+          <div className="flex items-center gap-3">
+            <a
+              href="https://wa.me/923369169265"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hidden sm:flex items-center gap-2.5 bg-[#25D366] hover:bg-[#20BD5A] text-white font-bold py-2.5 px-5 rounded-lg transition-all duration-200 shadow-lg shadow-[#25D366]/30 text-sm"
             >
-              {darkMode ? (
-                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
-                </svg>
-              ) : (
-                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
-                </svg>
-              )}
-            </button>
+              <MessageCircle className="w-5 h-5" />
+              <div className="flex flex-col leading-tight">
+                <span className="text-[10px] font-semibold opacity-90">Book Now</span>
+                <span className="text-xs font-bold">+92 336 9169265</span>
+              </div>
+            </a>
+
             <button
               onClick={() => setMobileOpen(!mobileOpen)}
-              className="p-2 rounded-lg text-slate-600 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-800 transition-colors"
+              className="lg:hidden w-10 h-10 rounded-lg bg-white/15 flex items-center justify-center text-white hover:bg-white/25 transition-all"
               aria-label="Toggle menu"
             >
-              <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                {mobileOpen ? (
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                ) : (
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-                )}
-              </svg>
+              {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
           </div>
         </div>
       </div>
 
-      {mobileOpen && (
-        <div className="md:hidden border-t border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900">
-          <div className="px-4 py-3 space-y-2">
-            {navLinks.map((link) => (
-              <NavLink
-                key={link.path}
-                to={link.path}
-                onClick={() => setMobileOpen(false)}
-                className={({ isActive }) =>
-                  `block px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
-                    isActive
-                      ? 'bg-primary-50 text-primary-600 dark:bg-primary-900/20 dark:text-primary-400'
-                      : 'text-slate-600 hover:bg-slate-50 dark:text-slate-400 dark:hover:bg-slate-800'
-                  }`
-                }
-              >
-                {link.label}
-              </NavLink>
-            ))}
-          </div>
+      {/* Mobile Menu */}
+      <div
+        className={`lg:hidden overflow-hidden transition-all duration-300 ease-in-out ${
+          mobileOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
+        }`}
+      >
+        <div className="border-t border-white/10 bg-primary-700 px-6 py-4 space-y-1">
+          {navLinks.map((link) => (
+            <NavLink
+              key={link.path}
+              to={link.path}
+              className={({ isActive }) =>
+                `block px-4 py-3 rounded-xl text-sm font-semibold transition-all ${
+                  isActive
+                    ? 'bg-white/15 text-white'
+                    : 'text-white/70 hover:text-white hover:bg-white/10'
+                }`
+              }
+            >
+              {link.label}
+            </NavLink>
+          ))}
+          <a
+            href="https://wa.me/923369169265"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-2.5 bg-[#25D366] hover:bg-[#20BD5A] text-white font-bold py-3 px-4 rounded-xl mt-3 text-sm"
+          >
+            <MessageCircle className="w-5 h-5" />
+            <div className="flex flex-col leading-tight">
+              <span className="text-[10px] font-semibold opacity-90">Book Now</span>
+              <span className="text-xs font-bold">+92 336 9169265</span>
+            </div>
+          </a>
         </div>
-      )}
+      </div>
     </nav>
   );
 }

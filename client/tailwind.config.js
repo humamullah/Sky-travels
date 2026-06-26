@@ -17,6 +17,13 @@ export default {
           800: '#1e40af',
           900: '#1e3a8a',
         },
+        kpk: {
+          green: '#1E5631',
+          'green-light': '#2a7a42',
+          'green-dark': '#163f24',
+          gold: '#d4a843',
+          cream: '#f8f6f0',
+        },
         accent: {
           50: '#fefce8',
           100: '#fef9c3',
@@ -32,6 +39,7 @@ export default {
       },
       fontFamily: {
         sans: ['Inter', 'system-ui', 'sans-serif'],
+        heading: ['Outfit', 'system-ui', 'sans-serif'],
       },
     },
   },
